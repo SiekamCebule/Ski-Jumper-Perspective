@@ -11,28 +11,44 @@ int main()
     char choice;
     string choice1;
     cout << "Ski Jumper Perspective " << APP_VERSION;
-    cout << "\nOpcje: \n1. Nowy zapis gry\n2. Wczytaj istniejacy zapis gry\n3. Wyswietl wczytane zasoby\n4. Pojedynczy skok\n";
+    cout << "\nOpcje: \n1. Nowy zapis gry\n2. Wczytaj istniej¥cy zapis gry\n3. Wy˜wietl wczytane zasoby\n4. Pojedyäczy skok\n";
     choice = getch();
     cls;
     switch (choice)
     {
     case '1':
     {
-        cout << "Podaj nazwe pliku (bez rozszerzenia): ";
+        cout << "Podaj nazw© pliku (bez rozszerzenia): ";
         save.initSave(choice1 + ".sav");
     }
     case '4':
     {
         cls;
-        selectTrainingHill();
-        cls;
-        showHillInfo(hill);
-        getch();
-        cls;
-        selectTrainingJumper();
+        //selectTrainingHill();
+        //cls;
+        //showHillInfo(hill);
+        //getch();
+        //cls;
+        // selectTrainingJumper();
         for (;;)
         {
-            trainingJumper.jump();
+            for (;;)
+            {
+                selectTrainingHill();
+                cout << "Belka startowa: ";
+                cin >> hill.startGate;
+                for (auto jp : jumpersList)
+                {
+                    jp.wind = 0;
+                    cls;
+                    jp.afterStart();
+                    jp.jump();
+                    jp.showDistanceAndToBeat();
+                    jp.showResult();
+                    getch();
+                    cls;
+                }
+            }
             getch();
         }
     }

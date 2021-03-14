@@ -4,52 +4,70 @@ void Save::initSave(string filename)
     cout << "";
 }
 
+void Jumper::afterStart()
+{
+    cout << name << " " << surname << " (" << nationality << ")" << endl;
+    getch();
+}
+
 void Jumper::jump()
 {
-
-    if (hill.kpoint <= 25)
-        hill.metersPoints = 4.8;
-    else if (hill.kpoint <= 30)
-        hill.metersPoints = 4.4;
-    else if (hill.kpoint <= 34)
-        hill.metersPoints = 4;
-    else if (hill.kpoint <= 39)
-        hill.metersPoints = 3.6;
-    else if (hill.kpoint <= 49)
-        hill.metersPoints = 3.2;
-    else if (hill.kpoint <= 59)
-        hill.metersPoints = 2.8;
-    else if (hill.kpoint <= 69)
-        hill.metersPoints = 2.4;
-    else if (hill.kpoint <= 79)
-        hill.metersPoints = 2.2;
-    else if (hill.kpoint <= 99)
-        hill.metersPoints = 2.0;
-    else if (hill.kpoint <= 169)
-        hill.metersPoints = 1.8;
-    else if (hill.kpoint >= 170)
-    {
-        hill.metersPoints = 1.2;
-        hill.pointsForK = 120;
-    }
-
-    cout << "Wiatr: ";
-    cin >> wind;
+    gate = hill.startGate;
+    hill.startup();
+    hill.setType();
     cls;
     int rd;
     if (takeoffPowerS > 120)
         takeoffPowerS = 120;
+    if (takeoffPowerS < 1)
+        takeoffPowerS = 1;
     if (takeoffTechniqueS > 120)
         takeoffTechniqueS = 120;
-    if (flightStyle > 3)
-        flightStyle = 1; //Styl V
+    if (takeoffTechniqueS < 1)
+        takeoffTechniqueS = 1;
+    if (flightTechniqueS > 120)
+        flightTechniqueS = 120;
+    if (flightTechniqueS < 1)
+        flightTechniqueS = 1;
+    if (flightStyle > 4)
+        flightStyle = 2; //Styl "nowoczesne V 1"
     if (skisPositionS > 14)
         skisPositionS = 10;
     takeoffPower = (takeoffPowerS);
+    takeoffPower += normalRandom(0, 5);
+    takeoffPower = round(takeoffPower);
+    if (takeoffPower > 160)
+        takeoffPower = 160;
+    else if (takeoffPower < 1)
+        takeoffPower = 1;
+
     takeoffTechnique = (takeoffTechniqueS * 0.987) + (form * 1.05);
-    //cout << "takeoffTechnique " << takeoffTechnique << endl;
-    //cout << "form " << form << endl;
+    takeoffTechnique += normalRandom(0, 7);
+    takeoffTechnique = round(takeoffTechnique);
+    if (takeoffTechnique > 280)
+        takeoffTechnique = 280;
+    if (takeoffTechnique < 1)
+        takeoffTechnique = 1;
+
+    int test1 = 20 - hill.flightStyleMeters[flightStyle] + randomInt(-4, 0);
     flightTechnique = (flightTechniqueS * 0.887) + (form * 1.15);
+    if (flightStyle == 0)
+        flightTechnique += randomInt(-11, -5);
+    else if (flightStyle == 1)
+        flightTechnique += randomInt(-2, 2);
+    else if (flightStyle == 2)
+        flightTechnique += randomInt(-3, 3);
+    else if (flightStyle == 3)
+        flightTechnique += randomInt(-4, 4);
+    else if (flightStyle == 4)
+        flightTechnique += randomInt(-5, 5);
+
+    flightTechnique += normalRandom(0, 7);
+    flightTechnique = round(flightTechnique);
+    if (flightTechnique > 280)
+        flightTechnique = 280;
+    if (flightTechnique < 1)
+        flightTechnique = 1;
 
     if (hill.gateMeters == (-1))
     {
@@ -66,312 +84,164 @@ void Jumper::jump()
 
     windB = wind + randomDouble(-hill.windFaulty, hill.windFaulty);
 
-    /*rd = randomInt(1, 8480);
-    if (rd <= 1)
-        takeoffPower += 20;
-    else if (rd <= 3)
-        takeoffPower += 19;
-    else if (rd <= 10)
-        takeoffPower += 18;
-    else if (rd <= 20)
-        takeoffPower += 17;
-    else if (rd <= 34)
-        takeoffPower += 16;
-    else if (rd <= 51)
-        takeoffPower += 15;
-    else if (rd <= 71)
-        takeoffPower += 14;
-    else if (rd <= 97)
-        takeoffPower += 13;
-    else if (rd <= 123)
-        takeoffPower += 12;
-    else if (rd <= 160)
-        takeoffPower += 11;
-    else if (rd <= 205)
-        takeoffPower += 10;
-    else if (rd <= 270)
-        takeoffPower += 9;
-    else if (rd <= 369)
-        takeoffPower += 8;
-    else if (rd <= 490)
-        takeoffPower += 7;
-    else if (rd <= 650)
-        takeoffPower += 6;
-    else if (rd <= 846)
-        takeoffPower += 5;
-    else if (rd <= 1120)
-        takeoffPower += 4;
-    else if (rd <= 1440)
-        takeoffPower += 3;
-    else if (rd <= 1880)
-        takeoffPower += 2;
-    else if (rd <= 2700)
-        takeoffPower += 1;
-    else if (rd <= 4800)
-        takeoffPower += 0;
-    else if (rd <= 6700)
-        takeoffPower += -1;
-    else if (rd <= 7950)
-        takeoffPower += -2;
-    else if (rd <= 8845)
-        takeoffPower += -3;
-    else if (rd <= 9420)
-        takeoffPower += -4;
-    else if (rd <= 9900)
-        takeoffPower += -5;
-    else if (rd <= 10150)
-        takeoffPower += -6;
-    else if (rd <= 10330)
-        takeoffPower += -7;
-    else if (rd <= 10450)
-        takeoffPower += -8;
-    else if (rd <= 10500)
-        takeoffPower += -9;
-    else if (rd <= 10554)
-        takeoffPower += -10;
-    else if (rd <= 10574)
-        takeoffPower += -11;
-    else if (rd <= 10589)
-        takeoffPower += -12;
-    else if (rd <= 10597)
-        takeoffPower += -13;
-    else if (rd <= 10604)
-        takeoffPower += -14;
-    else if (rd <= 10609)
-        takeoffPower += -15;
-    else if (rd <= 10713)
-        takeoffPower += -16;
-    else if (rd <= 10716)
-        takeoffPower += -17;
-    else if (rd <= 10718)
-        takeoffPower += -18;
-    else if (rd <= 10719)
-        takeoffPower += -19;
-
-    rd = randomInt(1, 10838);
-
-    if (rd <= 1)
-        takeoffTechnique += 40;
-    else if (rd <= 3)
-        takeoffTechnique += 39;
-    else if (rd <= 10)
-        takeoffTechnique += 38;
-    else if (rd <= 20)
-        takeoffTechnique += 37;
-    else if (rd <= 25)
-        takeoffTechnique += 36;
-    else if (rd <= 46)
-        takeoffTechnique += 35;
-    else if (rd <= 71)
-        takeoffTechnique += 34;
-    else if (rd <= 103)
-        takeoffTechnique += 33;
-    else if (rd <= 142)
-        takeoffTechnique += 32;
-    else if (rd <= 190)
-        takeoffTechnique += 31;
-    else if (rd <= 247)
-        takeoffTechnique += 30;
-    else if (rd <= 295)
-        takeoffTechnique += 29;
-    else if (rd <= 351)
-        takeoffTechnique += 28;
-    else if (rd <= 412)
-        takeoffTechnique += 27;
-    else if (rd <= 480)
-        takeoffTechnique += 26;
-    else if (rd <= 555)
-        takeoffTechnique += 25;
-    else if (rd <= 640)
-        takeoffTechnique += 24;
-    else if (rd <= 737)
-        takeoffTechnique += 23;
-    else if (rd <= 847)
-        takeoffTechnique += 22;
-    else if (rd <= 980)
-        takeoffTechnique += 21;
-    else if (rd <= 1116)
-        takeoffTechnique += 20;
-    else if (rd <= 1285)
-        takeoffTechnique += 19;
-    else if (rd <= 1470)
-        takeoffTechnique += 18;
-    else if (rd <= 1680)
-        takeoffTechnique += 17;
-    else if (rd <= 1915)
-        takeoffTechnique += 16;
-    else if (rd <= 2180)
-        takeoffTechnique += 15;
-    else if (rd <= 2476)
-        takeoffTechnique += 14;
-    else if (rd <= 2786)
-        takeoffTechnique += 13;
-    else if (rd <= 3126)
-        takeoffTechnique += 12;
-    else if (rd <= 3486)
-        takeoffTechnique += 11;
-    else if (rd <= 3871)
-        takeoffTechnique += 10;
-    else if (rd <= 4273)
-        takeoffTechnique += 9;
-    else if (rd <= 4753)
-        takeoffTechnique += 8;
-    else if (rd <= 5273)
-        takeoffTechnique += 7;
-    else if (rd <= 5833)
-        takeoffTechnique += 6;
-    else if (rd <= 6435)
-        takeoffTechnique += 5;
-    else if (rd <= 7100)
-        takeoffTechnique += 4;
-    else if (rd <= 7860)
-        takeoffTechnique += 3;
-    else if (rd <= 8740)
-        takeoffTechnique += 2;
-    else if (rd <= 9738)
-        takeoffTechnique += 1;
-    else if (rd <= 10838)
-        takeoffTechnique += 0;
-
-    if (rd <= 1)
-        takeoffTechnique += 20;
-    else if (rd <= 3)
-        takeoffTechnique += 19;
-    else if (rd <= 10)
-        takeoffTechnique += 18;
-    else if (rd <= 20)
-        takeoffTechnique += 17;
-    else if (rd <= 34)
-        takeoffTechnique += 16;
-    else if (rd <= 51)
-        takeoffTechnique += 15;
-    else if (rd <= 71)
-        takeoffTechnique += 14;
-    else if (rd <= 97)
-        takeoffTechnique += 13;
-    else if (rd <= 123)
-        takeoffTechnique += 12;
-    else if (rd <= 160)
-        takeoffTechnique += 11;
-    else if (rd <= 205)
-        takeoffTechnique += 10;
-    else if (rd <= 270)
-        takeoffTechnique += 9;
-    else if (rd <= 369)
-        takeoffTechnique += 8;
-    else if (rd <= 490)
-        takeoffTechnique += 7;
-    else if (rd <= 650)
-        takeoffTechnique += 6;
-    else if (rd <= 846)
-        takeoffTechnique += 5;
-    else if (rd <= 1120)
-        takeoffTechnique += 4;
-    else if (rd <= 1440)
-        takeoffTechnique += 3;
-    else if (rd <= 1880)
-        takeoffTechnique += 2;
-    else if (rd <= 2700)
-        takeoffTechnique += 1;
-    else if (rd <= 4800)
-        takeoffTechnique += 0;
-    else if (rd <= 6700)
-        takeoffTechnique += -1;
-    else if (rd <= 7950)
-        takeoffTechnique += -2;
-    else if (rd <= 8845)
-        takeoffTechnique += -3;
-    else if (rd <= 9420)
-        takeoffTechnique += -4;
-    else if (rd <= 9900)
-        takeoffTechnique += -5;
-    else if (rd <= 10150)
-        takeoffTechnique += -6;
-    else if (rd <= 10330)
-        takeoffTechnique += -7;
-    else if (rd <= 10450)
-        takeoffTechnique += -8;
-    else if (rd <= 10500)
-        takeoffTechnique += -9;
-    else if (rd <= 10554)
-        takeoffTechnique += -10;
-    else if (rd <= 10574)
-        takeoffTechnique += -11;
-    else if (rd <= 10589)
-        takeoffTechnique += -12;
-    else if (rd <= 10597)
-        takeoffTechnique += -13;
-    else if (rd <= 10604)
-        takeoffTechnique += -14;
-    else if (rd <= 10609)
-        takeoffTechnique += -15;
-    else if (rd <= 10713)
-        takeoffTechnique += -16;
-    else if (rd <= 10716)
-        takeoffTechnique += -17;
-    else if (rd <= 10718)
-        takeoffTechnique += -18;
-    else if (rd <= 10719)
-        takeoffTechnique += -19;*/
-
-    /*int test1 = 30;
-    uint64_t rd1[60];
-    rd1[0] = 1;
-    for (int i = 1; i <= 32; i++)
-    {
-        rd1[i] = rd1[i - 1] * 3;
-    }
-
-    uint64_t rd2[30];
-    rd2[0] = 1;
-    for (int i = 1; i <= 31; i++)
-    {
-        rd2[i] = (rd1[i + 30] + (rd1[rd1[32 - i]] - (rd1[rd1[31 - i]])));
-    }
-
-    for (int i = 32; i <= 61; i++)
-    {
-        rd1[i] = rd2[i - 32];
-    }
-
-    for (auto rr : rd1)
-    {
-        cout << test1 << ". " << rr << endl;
-        test1--;
-    }
-
-    rd = randomInt(1, rd1[59]);*/
-
-    //cout << "distance " << distance << endl;
     double diff;
     diff = (takeoffPower - hill.optimalTakeoffPower);
-    //cout << "optymalna moc wybicia:" << hill.optimalTakeoffPower << endl;
+
     if (diff < 0)
         (diff *= 0.6456);
     else
         diff *= 0.44;
 
-    //cout << "diff: " << diff << endl;
-
-    //odlegÅ‚oÅ›Ä‡
+    //odlegˆo˜†
     distance = hill.startDist;
+    //cout << "Odl: " << distance << endl;
     distance += (gate * hill.gateMeters);
-    //cout << distance;
-    //cout << "windb: " << windB << endl;
-    // cout << hill.windMetersFront << endl;
+    //cout << "Odl: " << distance << endl;
+
     if (windB > 0)
         distance += (windB * hill.windMetersFront);
     else if (windB < 0)
         distance += (windB * hill.windMetersBack);
+    //cout << "Odl: " << distance << endl;
+
+    //wiatr
+    //for (auto sn : windSensor)
+    //  sn += randomDouble(-hill.windFaulty, hill.windFaulty);
 
     distance += (diff * hill.takeoffPowerImportance);
+    //cout << "Odl: " << distance << endl;
     distance += takeoffTechnique * hill.takeoffTechniqueMeters;
+    //cout << "Odl: " << distance << endl;
     distance += flightTechnique * hill.flightTechniqueMeters;
+    //cout << "Odl: " << distance << endl;
+    for (int i = 0; i < 5; i++)
+    {
+        if (flightStyle == i)
+        {
+            distance += hill.flightStyleMeters[i];
+        }
+    }
+    //cout << "Odl: " << distance << endl;
+    distance = round(distance * 2) / 2;
+    //cout << "Odl: " << distance << endl;
 
-    cout << "Wiatr: " << windB << ", Moc wybicia: " << takeoffPower << ", Technika wybicia: " << takeoffTechnique
-         << ", Technika lotu: " << flightTechnique << ", Odleglosc: " << distance << endl;
+    if (points < 0)
+        points = 0;
+    points = (hill.pointsForK + (hill.metersPoints * (distance - hill.kpoint) + judgesAll + (compensationGate + compensationWind)));
 }
 
+void Jumper::windDistance()
+{
+    if (windSensor[0] > 0)
+    {
+        if (hill.type == "˜rednia")
+            distance += (percent(25 + randomInt(-2, 2), windSensor[0]) * hill.windMetersFront);
+    }
+    else if (windSensor[0] < 0)
+    {
+        distance += (percent(25 + randomInt(-2, 2), windSensor[0]) * hill.windMetersBack);
+    }
+    if (windSensor[0] > 0)
+    {
+        if (hill.type == "normalna")
+            distance += (percent(20 + randomInt(-2, 2), windSensor[0]) * hill.windMetersFront);
+    }
+    else if (windSensor[0] < 0)
+    {
+        distance += (percent(10 + randomInt(-2, 2), windSensor[0]) * hill.windMetersBack);
+    }
+}
+
+void Jumper::showResult()
+{
+    cout << name << " " << surname << " (" << nationality << ")" << endl;
+    cout << "Odlegˆo˜†: " << distance << "m" << endl
+         << "Punkty: " << points << endl;
+}
+
+void Jumper::showHideInfo()
+{
+    cout << "Moc wybicia: " << takeoffPower << ", Technika wybicia: " << takeoffTechnique << ", Technika lotu: " << flightTechnique << endl;
+}
+
+void Jumper::showDistanceAndToBeat()
+{
+    for (int i = 0; i <= distance; i++)
+    {
+        if (i == distance)
+        {
+            cout << "| " << i << "m |" << endl;
+        }
+        else
+            cout << i << "m" << endl;
+
+        if (distance - i < 5 + (randomInt(-12, 12)))
+            Sleep(86);
+        else if (distance - i < 10 + (randomInt(-12, 12)))
+            Sleep(76);
+        else if (distance - i < 25 + (randomInt(-12, 12)))
+            Sleep(64);
+        else if (distance - i < 45 + (randomInt(-12, 12)))
+            Sleep(51);
+        else if (distance - i < 70 + (randomInt(-12, 12)))
+            Sleep(34);
+        else if (distance - i < 100 + (randomInt(-12, 12)))
+            Sleep(20);
+        else if (distance - i < 150 + (randomInt(-12, 12)))
+            Sleep(15);
+        else
+            Sleep(10);
+
+        cls;
+    }
+    cls;
+}
+
+void Hill::startup()
+{
+    pointsForK = 60;
+    if (kpoint <= 25)
+        metersPoints = 4.8;
+    else if (hill.kpoint <= 30)
+        metersPoints = 4.4;
+    else if (hill.kpoint <= 34)
+        metersPoints = 4;
+    else if (hill.kpoint <= 39)
+        metersPoints = 3.6;
+    else if (hill.kpoint <= 49)
+        metersPoints = 3.2;
+    else if (hill.kpoint <= 59)
+        metersPoints = 2.8;
+    else if (hill.kpoint <= 69)
+        metersPoints = 2.4;
+    else if (hill.kpoint <= 79)
+        metersPoints = 2.2;
+    else if (hill.kpoint <= 99)
+        metersPoints = 2.0;
+    else if (hill.kpoint <= 169)
+        metersPoints = 1.8;
+    else if (hill.kpoint >= 170)
+    {
+        metersPoints = 1.2;
+        hill.pointsForK = 120;
+    }
+}
+
+void Hill::setType()
+{
+    if (kpoint <= 0)
+        type = "brak danych";
+    if (kpoint <= 44)
+        type = "maˆa";
+    if (kpoint <= 74)
+        type = "˜rednia";
+    if (kpoint <= 99)
+        type = "normalna";
+    if (kpoint <= 169)
+        type = "du¾a";
+    else
+        type = "mamucia";
+}
 int randomInt(int a, int b)
 {
     /*int r1, r2[3000], r3;
@@ -414,6 +284,42 @@ double percent(double prc, double num)
     double sum;
     sum = (prc / 100) * num;
     return sum;
+}
+
+double normalRandom(double mid, double a)
+{
+    srand(time(NULL));
+    default_random_engine gen;
+    normal_distribution<double> ndist(mid, a);
+    double result, min, max;
+    double rd[1000];
+    int nr = randomInt(0, 999);
+
+    for (int i = 0; i < 1000; i++)
+    {
+        rd[i] = ndist(gen);
+        if (i == 0)
+        {
+            min = rd[i];
+            max = rd[i];
+        }
+        if (rd[i] > max)
+            max = rd[i];
+        else if (rd[i] < min)
+            min = rd[i];
+    }
+
+    return rd[nr];
+}
+void binomalRandom(int up, int chance)
+{
+    default_random_engine gen;
+    binomial_distribution<int> bdist(up, chance);
+
+    for (int i = 0; i <= 100; i++)
+    {
+        cout << i + 1 << ". " << bdist(gen) << endl;
+    }
 }
 
 void selectTrainingHill()
@@ -466,9 +372,15 @@ void loadHills()
         getline(hlf, tmp, ',');
         vechill.hsLandDifficulty = stod(tmp);
         getline(hlf, tmp, ',');
-        vechill.optimalSkisPosition = stoi(tmp);
+        vechill.flightStyleMeters[0] = stod(tmp);
         getline(hlf, tmp, ',');
-        vechill.skisPositionEffect = stod(tmp);
+        vechill.flightStyleMeters[1] = stod(tmp);
+        getline(hlf, tmp, ',');
+        vechill.flightStyleMeters[2] = stod(tmp);
+        getline(hlf, tmp, ',');
+        vechill.flightStyleMeters[3] = stod(tmp);
+        getline(hlf, tmp, ',');
+        vechill.flightStyleMeters[4] = stod(tmp);
         getline(hlf, tmp, ',');
         vechill.optimalTakeoffPower = stoi(tmp);
         getline(hlf, tmp, ',');
@@ -503,8 +415,6 @@ void loadJumpers(bool ifForm)
         jp.flightTechniqueS = stoi(tmp);
         getline(jpf, tmp, ',');
         jp.flightStyle = stoi(tmp);
-        getline(jpf, tmp, ',');
-        jp.skisPositionS = stoi(tmp);
         getline(jpf, tmp, ',');
         jp.landSkillS = stoi(tmp);
         getline(jpf, tmp, ',');

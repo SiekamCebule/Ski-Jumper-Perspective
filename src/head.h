@@ -44,18 +44,23 @@ public:
     int landSkillS, landStyleS;
     int expernice, condition, readyToJump, form, happiness, injuryResistance;
     int gate;
-    //skok
     double distance, toBeat;
     double judges[5], minJudge, maxJudge, wind, windB, windBonus, judgeRating, judgesPoints, judgesAll;
     double points, compensationGate, compensationWind;
     bool dsq;
+    double windSensor[10];
+    void afterStart();
     void jump();
+    void windDistance();
+    void showResult();
+    void showHideInfo();
+    void showDistanceAndToBeat();
 };
 
 class Hill
 {
 public:
-    string name, country;
+    string name, country, type;
     double gatePoints, gateMeters;
     int kpoint, hspoint, pointsForK;
     double maxdist;
@@ -64,13 +69,17 @@ public:
     double startDist, takeoffDist, flightDist, minWindChange, maxWindChange;
     int optimalSkisPosition;
     double skisPositionEffect;
-    double  takeoffTechniqueMeters, flightTechniqueMeters;
+    double takeoffTechniqueMeters, flightTechniqueMeters;
     int optimalTakeoffPower;
+    double flightStyleMeters[5];
     double takeoffPowerImportance;
+    int startGate;
 
     //config
 
     double windFaulty;
+    void startup();
+    void setType();
 };
 class Time
 {
@@ -95,6 +104,9 @@ int randomInt(int, int);
 double randomDouble(double, double);
 void colorText(unsigned short color, string text);
 double percent(double prc, double num);
+double normalRandom(double mid, double a);
+void binomalRandom(int up, int chance);
+//-----------------------------//
 void loadHills();
 void loadJumpers(bool ifForm);
 void loadTrainingConfig();
@@ -103,4 +115,4 @@ void selectTrainingJumper();
 void showHillInfo(Hill hl);
 
 vector<Hill> hills;
-vector <Jumper> jumpersList;
+vector<Jumper> jumpersList;
