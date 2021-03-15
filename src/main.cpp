@@ -2,6 +2,7 @@
 
 int main()
 {
+    SetConsoleTextAttribute(hcon, 15);
     Jumper testjumper;
     loadHills();
     loadJumpers(true);
@@ -24,24 +25,23 @@ int main()
     case '4':
     {
         cls;
-        //selectTrainingHill();
-        //cls;
-        //showHillInfo(hill);
-        //getch();
-        //cls;
-        // selectTrainingJumper();
         for (;;)
         {
             for (;;)
             {
                 selectTrainingHill();
+                loadTrainingConfig();
                 cout << "Belka startowa: ";
                 cin >> hill.startGate;
+                hill.startWind = randomDouble(hill.typicalWind[0], hill.typicalWind[1]);
                 for (auto jp : jumpersList)
                 {
-                    jp.wind = 0;
                     cls;
                     jp.afterStart();
+                    cout << "Belka: ";
+                    cin >> jp.gate;
+                    cout << "Wiatr: ";
+                    cin >> jp.wind;
                     jp.jump();
                     jp.showDistanceAndToBeat();
                     jp.showResult();

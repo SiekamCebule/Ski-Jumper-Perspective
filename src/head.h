@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <iostream>
 #include <stdio.h>
 #include <windows.h>
 #include <cstdio>
@@ -51,7 +50,6 @@ public:
     double windSensor[10];
     void afterStart();
     void jump();
-    void windDistance();
     void showResult();
     void showHideInfo();
     void showDistanceAndToBeat();
@@ -64,8 +62,8 @@ public:
     double gatePoints, gateMeters;
     int kpoint, hspoint, pointsForK;
     double maxdist;
-    double windMetersFront, windMetersBack, windPointsFront, windPointsBack, typicalWind[2];
-    double metersPoints, startWind, hsLandDifficulty;
+    double windMetersFront, windMetersBack, windPointsFront, windPointsBack;
+    double metersPoints, hsLandDifficulty;
     double startDist, takeoffDist, flightDist, minWindChange, maxWindChange;
     int optimalSkisPosition;
     double skisPositionEffect;
@@ -74,6 +72,7 @@ public:
     double flightStyleMeters[5];
     double takeoffPowerImportance;
     int startGate;
+    double typicalWind[2], windChange[2], startWind;
 
     //config
 

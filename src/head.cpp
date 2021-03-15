@@ -12,10 +12,11 @@ void Jumper::afterStart()
 
 void Jumper::jump()
 {
-    gate = hill.startGate;
     hill.startup();
     hill.setType();
-    cls;
+    wind += randomDouble(hill.windChange[0], hill.windChange[1]);
+    windB = wind + normalRandom(0, hill.windFaulty);
+
     int rd;
     if (takeoffPowerS > 120)
         takeoffPowerS = 120;
@@ -82,7 +83,12 @@ void Jumper::jump()
         hill.windMetersFront = (hill.windMetersFront / hill.metersPoints);
     }
 
-    windB = wind + randomDouble(-hill.windFaulty, hill.windFaulty);
+    if (windB < 0)
+        compensationWind = -windB * hill.windPointsBack;
+    else if (windB > 0)
+        compensationWind = -windB * hill.windPointsFront;
+
+    compensationGate = (hill.startGate - gate) * hill.gatePoints;
 
     double diff;
     diff = (takeoffPower - hill.optimalTakeoffPower);
@@ -130,33 +136,77 @@ void Jumper::jump()
     points = (hill.pointsForK + (hill.metersPoints * (distance - hill.kpoint) + judgesAll + (compensationGate + compensationWind)));
 }
 
-void Jumper::windDistance()
-{
-    if (windSensor[0] > 0)
-    {
-        if (hill.type == "˜rednia")
-            distance += (percent(25 + randomInt(-2, 2), windSensor[0]) * hill.windMetersFront);
-    }
-    else if (windSensor[0] < 0)
-    {
-        distance += (percent(25 + randomInt(-2, 2), windSensor[0]) * hill.windMetersBack);
-    }
-    if (windSensor[0] > 0)
-    {
-        if (hill.type == "normalna")
-            distance += (percent(20 + randomInt(-2, 2), windSensor[0]) * hill.windMetersFront);
-    }
-    else if (windSensor[0] < 0)
-    {
-        distance += (percent(10 + randomInt(-2, 2), windSensor[0]) * hill.windMetersBack);
-    }
-}
-
 void Jumper::showResult()
 {
     cout << name << " " << surname << " (" << nationality << ")" << endl;
-    cout << "Odlegˆo˜†: " << distance << "m" << endl
-         << "Punkty: " << points << endl;
+    cout << "Odlegˆo˜†: " << distance << "m" << endl;
+    if (windB < 0)
+    {
+        colorText(12, "Wiatr: ");
+        colorText(12, to_string(windB));
+    }
+
+    else if (windB > 0)
+    {
+        colorText(10, "Wiatr: ");
+        colorText(10, to_string(windB));
+    }
+    else
+    {
+        colorText(7, "Wiatr: ");
+        colorText(7, to_string(windB));
+    }
+    cout << endl;
+    if (compensationGate < 0)
+    {
+        colorText(12, "Za belke: ");
+        colorText(12, to_string(compensationGate));
+    }
+    else if (compensationGate > 0)
+    {
+        colorText(10, "Za belke: ");
+        colorText(10, to_string(compensationGate));
+    }
+    else
+    {
+        colorText(7, "Za belke: ");
+        colorText(7, to_string(compensationGate));
+    }
+    cout << endl;
+    if (compensationWind < 0)
+    {
+        colorText(12, "Za wiatr: ");
+        colorText(12, to_string(compensationWind));
+    }
+    else if (compensationWind > 0)
+    {
+        colorText(10, "Za wiatr: ");
+        colorText(10, to_string(compensationWind));
+    }
+    else
+    {
+        colorText(7, "Za wiatr: ");
+        colorText(7, to_string(compensationWind));
+    }
+    cout << endl;
+    if ((compensationWind + compensationGate) < 0)
+    {
+        colorText(12, "Lacznie: ");
+        colorText(12, to_string((compensationWind + compensationGate)));
+    }
+    else if ((compensationWind + compensationGate) > 0)
+    {
+        colorText(10, "Lacznie: ");
+        colorText(10, to_string((compensationWind + compensationGate)));
+    }
+    else
+    {
+        colorText(7, "Lacznie: ");
+        colorText(7, to_string((compensationWind + compensationGate)));
+    }
+
+    SetConsoleTextAttribute(hcon, 15);
+    cout << "\nPunkty: " << points << endl;
 }
 
 void Jumper::showHideInfo()
@@ -436,9 +486,24 @@ void loadJumpers(bool ifForm)
 void loadTrainingConfig()
 {
     string tmp;
-    tcf.open("../resources/trainingcofigfile.csv", ios::in);
+    ;
+    tcf.open("../resources/trainingconfig.csv", ios::in);
     getline(tcf, tmp, ',');
     hill.windFaulty = stod(tmp);
+    //cout << tmp;
+    getline(tcf, tmp, ',');
+    hill.typicalWind[0] = stod(tmp);
+    //cout << tmp;
+    getline(tcf, tmp, ',');
+    hill.typicalWind[1] = stod(tmp);
+    //cout << tmp;
+    getline(tcf, tmp, ',');
+    hill.windChange[0] = stod(tmp);
+    //cout << tmp;
+    getline(tcf, tmp);
+    hill.windChange[1] = stod(tmp);
+    //cout << tmp;
+    tcf.close();
 }
 
 void selectTrainingJumper()
