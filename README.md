@@ -1,4 +1,4 @@
-# Ski-Jumper-Perspective
+# Ski-Jump-Career #
 Gra o tematyce skoków narciarskich. Mamy do wyboru karierę własnego skoczka (można użyć istniejących karier, z dodatkową zawartością np. dodatkową fabułą), lub poprowadzić którąś z reprezentacji. Gra jest na bardzo wczesnym etapie rozwoju.
 
 ## Funkcje w aktualnej wersji ##
